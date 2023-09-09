@@ -1,2 +1,23 @@
 # from main import analyze
 
+import gooey
+
+@gooey.Gooey(program_name="Check In App", 
+              header_bg_color='#500000', 
+              body_bg_color='#EEEEEE', 
+              footer_bg_color='#500000', 
+              terminal_panel_color='#EEEEEE')
+def main():
+    parser = gooey.GooeyParser(description="Checking into work? Great! Please type your name and select the check in button and submit. Thanks!")
+
+    parser.add_argument('name', metavar='Name', widget='TextField', help="Enter your name:")
+    parser.add_argument('--check_in', metavar='Check In', action='store_true', help="Check In")
+
+    args = parser.parse_args()
+
+    if args.check_in:
+        name = args.name
+        print(f"Hello, {name}! You have checked in.")
+
+if __name__ == "__main__":
+    main()
