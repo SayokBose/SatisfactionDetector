@@ -54,7 +54,7 @@ while True:
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         # Append timestamp, emotion, and satisfaction to the DataFrame
-        satisfaction_data = satisfaction_data.append({'Timestamp': timestamp, 'Emotion': emotion, 'Satisfaction': satisfaction}, ignore_index=True)
+        #satisfaction_data = satisfaction_data.append({'Timestamp': timestamp, 'Emotion': emotion, 'Satisfaction': satisfaction}, ignore_index=True)
 
         # Draw rectangle around face and label with predicted emotion
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
