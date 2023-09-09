@@ -1,40 +1,68 @@
-# from main import analyze
-
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton
+from PyQt5.QtCore import Qt
 
-class CheckInApp(QWidget):
+class ClockInApp(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle('Check In App')
+        self.setWindowTitle('Clock In App')
         self.setGeometry(100, 100, 400, 200)
 
         layout = QVBoxLayout()
 
-        description_label = QLabel("Checking into work? Great! Please type your name and click the Check In button to submit. Thanks!")
+        description_label = QLabel("Clocking into work? Great! Please type your name and click the Clock In button to submit. Thanks!")
         layout.addWidget(description_label)
 
         self.name_input = QLineEdit()
         layout.addWidget(self.name_input)
 
-        check_in_button = QPushButton("Check In")
-        check_in_button.clicked.connect(self.check_in)
-        layout.addWidget(check_in_button)
+        clock_in_button = QPushButton("Clock In")
+        clock_in_button.clicked.connect(self.clock_in)
+        layout.addWidget(clock_in_button)
 
         self.result_label = QLabel()
         layout.addWidget(self.result_label)
 
         self.setLayout(layout)
 
-    def check_in(self):
+    def clock_in(self):
         name = self.name_input.text()
-        self.result_label.setText(f"Hello, {name}! You have checked in.")
+        self.result_label.setText(f"Hello, {name}! You have clocked in.")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = CheckInApp()
+    window = ClockInApp()
+
+    # Apply a dark theme using CSS styling
+    app.setStyleSheet('''
+        QWidget {
+            background-color: #062178;
+            color: #fff;
+        }
+        QLabel, QLineEdit {
+            background-color: #444;
+            color: #fff;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        QPushButton {
+            background-color: #008CBA;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        QPushButton:hover {
+            background-color: #007B9D;
+        }
+        QLabel#result_label {
+            margin-top: 10px;
+        }
+    ''')
+
     window.show()
     sys.exit(app.exec_())
