@@ -6,19 +6,7 @@ from deepface import DeepFace
 from datetime import datetime
 import face_recognition as fr
 
-class Face:
-    def __init__(self, encoder):
-        self.encoder = encoder
-        self.emotions = []
 
-    def add_emotion(self, emotion):
-        self.emotions.append(emotion)
-
-    def get_mode_emotion(self):
-        if self.emotions:
-            return mode(self.emotions)
-        else:
-            return "No emotions detected"
 
 
 # Load the pre-trained emotion detection model
@@ -105,7 +93,7 @@ while True:
             # Append timestamp, emotion, satisfaction, and category to the DataFrame
             satisScore = {"Satisfied" : 1, "Neutral": .5, "Unsatisfied" : 0}
             
-            satisfaction_data['Timestamp'].append(timestamp)
+            #satisfaction_data['Timestamp'].append(timestamp)
             #satisfaction_data = satisfaction_data.append({'Timestamp': timestamp, 'Satisfaction': satisScore[category]}, ignore_index=True)
 
             # Draw rectangle around the face and label with predicted emotion and category
@@ -125,3 +113,5 @@ cv2.destroyAllWindows()
 
 # Export the DataFrame to an Excel file
 satisfaction_data.to_excel('satisfaction_data.xlsx', index=False)
+
+
