@@ -5,6 +5,7 @@ import numpy as np
 from deepface import DeepFace
 from datetime import datetime
 import face_recognition as fr
+import openpyxl
 
 def analyze(name):
     # Load the pre-trained emotion detection model
@@ -83,19 +84,40 @@ def analyze(name):
     cap.release()
     cv2.destroyAllWindows()
 
-    excel_writer = pd.ExcelWriter('satisfaction_data.xlsx', engine='openpyxl', mode='a')
-
+  
     try:
-        with pd.ExcelFile('satisfaction_data.xlsx') as xls:
-            if name in xls.sheet_names:
-                satisfaction_data.to_excel(excel_writer, sheet_name=name, index=False)
-            else:
-                satisfaction_data.to_excel(excel_writer, sheet_name=name, index=False)
-    except FileNotFoundError:
-        satisfaction_data.to_excel(excel_writer, sheet_name=name, index=False)
+        print('file found')
+        #check if there is a sheet that is already named name.
+        #if so, simply concat satisfaction_data dataframe to the end of what is already in the excel file.
+        #else, create a new sheet in the excel file that just holds the satisfaction_data dataframe
+        excel_file_path = 'satisfaction_data.xlsx'
+        
+        workbook = openpyxl.load_workbook(excel_file_path)
 
-    excel_writer.save()
-    excel_writer.close()
+        # Check if the sheet with the specified name already exists
+        if name in workbook.sheetnames:
+            print('name exists')
+            # If the sheet exists, append satisfaction_data to it
+            
+            existing_df = pd.read_excel(excel_file_path, sheet_name=name)
+            combined_df = pd.concat([existing_df, satisfaction_data])
+
+            # Overwrite the existing sheet with the combined data
+            print(name)
+
+            with pd.ExcelWriter(excel_file_path, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+                combined_df.to_excel(writer, sheet_name=name, index=False)
+
+            #combined_df.to_excel(excel_file_path, sheet_name=name, index=False)
+         
+        else:
+            print('name doesnt exist')
+            # If the sheet doesn't exist, create a new sheet and write satisfaction_data to it
+            with pd.ExcelWriter(excel_file_path, engine='openpyxl', mode='a') as writer:
+                satisfaction_data.to_excel(writer, sheet_name=name, index=False)
+    except FileNotFoundError:
+        satisfaction_data.to_excel('satisfaction_data.xlsx', sheet_name=name, index=False)
+    
 
 # Call the analyze function with the person's name
 
